@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+//table barang
+model Barangs {
+  id  Int @id @default(autoincrement())
+  nama_barang String  @unique
+  kategori  String
+  stok Int
+  harga Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//table kategori
+model Kategoris {
+  id Int @id @default(autoincrement())
+  nama_kategori String @unique
+}
+
+model Pelanggans{
+  id Int @id @default(autoincrement())
+  nama String @unique
+}
+
+model Users {
+  id Int @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
+model Laporans {
+  id Int @id @default(autoincrement())
+  pelanggan String
+  totalHarga Int
+  createdAt DateTime @default(now())
+
+  //foreign key
+  cart Carts[] //satu laporan bisa memiliki banyak cart
+}
+
+model Carts{
+  id Int @id @default(autoincrement())
+  laporan_id Int
+  nama_barang String
+  harga Int
+  stok Int
+  total_harga Int
+  jenis String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //relasi
+  laporan Laporans @relation(fields: [laporan_id], references: [id], onDelete: Cascade)
+}
