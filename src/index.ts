@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { jwt } from "@elysiajs/jwt";
 import { PrismaClient } from "@prisma/client";
 import { postBarang, getBarang } from "./controller/barangController";
 import { getKategori, postKategori } from "./controller/kategoriController";
@@ -16,7 +17,21 @@ type barang = {
 };
 
 const app = new Elysia({ prefix: "/api" })
+  .use(
+    jwt({
+      name: "jwt",
+      secret: "mbak ilil",
+      exp: "1d",
+    })
+  )
   .get("/", () => "Hello Elysia")
+  .post(
+    "/registrasi",
+    (req: { body: { name: string; username: string; password: string } }) => {
+      postUser(req.body);
+      return "registrasi sukses";
+    }
+  )
   .get("/barang", () => {
     return getBarang();
   })
