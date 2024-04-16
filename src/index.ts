@@ -6,6 +6,7 @@ import { getPelanggan, postPelanggan } from "./controller/pelangganController";
 import { getUser, postUser, signIn } from "./controller/userController";
 import { getLaporan, postLaporan } from "./controller/laporanController";
 import jwt from "@elysiajs/jwt";
+import cors from "@elysiajs/cors";
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,7 @@ type user = {
 };
 
 const app = new Elysia({ prefix: "/api" })
+  .use(cors())
   .use(jwt({ name: "jwt", secret: "rahasia-dong" }))
 
   .get("/", () => "Hello Elysia")
@@ -35,7 +37,7 @@ const app = new Elysia({ prefix: "/api" })
         maxAge: 60 * 60 * 24 * 7,
       });
 
-      return auth.value;
+      return { token: auth.value };
     }
   })
 
@@ -46,7 +48,6 @@ const app = new Elysia({ prefix: "/api" })
 
   .get("/barang", async ({ jwt, cookie: { auth } }) => {
     const profile = await jwt.verify(auth.value);
-    console.log("profile", profile);
 
     if (!profile) {
       throw new Error("Unauthorized");
