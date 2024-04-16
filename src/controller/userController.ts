@@ -7,6 +7,11 @@ type user = {
   password: string;
 };
 
+type sign = {
+  username: string;
+  password: string;
+};
+
 export const getUser = async () => {
   try {
     const user = await prisma.users.findMany();
@@ -23,6 +28,21 @@ export const postUser = async (data: user) => {
       data: data,
     });
     console.log(user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const signIn = async (body: unknown) => {
+  const data = JSON.parse(JSON.stringify(body));
+  try {
+    const user = await prisma.users.findFirst({
+      where: {
+        username: data.username,
+        password: data.password,
+      },
+    });
+    return user;
   } catch (err) {
     console.log(err);
   }
