@@ -23,7 +23,7 @@ type user = {
 };
 
 const app = new Elysia({ prefix: "/api" })
-  .use(cors())
+  .use(cors({ credentials: true }))
   .use(jwt({ name: "jwt", secret: "rahasia-dong" }))
 
   .get("/", () => "Hello Elysia")
@@ -46,13 +46,11 @@ const app = new Elysia({ prefix: "/api" })
     return "you're logged out";
   })
 
-  .get("/barang", async ({ jwt, cookie: { auth } }) => {
-    const profile = await jwt.verify(auth.value);
-
+  .get("/barang", async ({ jwt, headers: { authorization } }) => {
+    const profile = await jwt.verify(authorization);
     if (!profile) {
       throw new Error("Unauthorized");
     }
-
     return getBarang();
   })
 

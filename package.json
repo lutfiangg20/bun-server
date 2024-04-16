@@ -10,12 +10,12 @@
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/jwt": "^1.0.2",
     "@elysiajs/static": "^1.0.2",
-    "@prisma/client": "5.12.0",
+    "@prisma/client": "5.12.1",
     "elysia": "latest"
   },
   "devDependencies": {
     "bun-types": "latest",
-    "prisma": "^5.12.0"
+    "prisma": "^5.12.1"
   },
   "module": "src/index.js",
   "bun-create": {
