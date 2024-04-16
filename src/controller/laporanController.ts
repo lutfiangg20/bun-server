@@ -4,11 +4,16 @@ const prisma = new PrismaClient();
 type laporan = {
   pelanggan: string;
   totalHarga: number;
+  cart: [];
 };
 
 export const getLaporan = async () => {
   try {
-    const laporan = await prisma.laporans.findMany();
+    const laporan = await prisma.laporans.findMany({
+      include: {
+        cart: true,
+      },
+    });
     console.log(laporan);
     return laporan;
   } catch (err) {
@@ -19,7 +24,13 @@ export const getLaporan = async () => {
 export const postLaporan = async (data: laporan) => {
   try {
     const laporan = await prisma.laporans.create({
-      data: data,
+      data: {
+        pelanggan: data.pelanggan,
+        totalHarga: data.totalHarga,
+        cart: {
+          create: data.cart,
+        },
+      },
     });
 
     console.log(laporan);

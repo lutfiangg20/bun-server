@@ -96,7 +96,7 @@ const app = new Elysia({ prefix: "/api" })
 
   .post(
     "/laporan",
-    (req: { body: { pelanggan: string; totalHarga: number } }) => {
+    (req: { body: { pelanggan: string; totalHarga: number; cart: [] } }) => {
       postLaporan(req.body);
       return { message: "success" };
     }
