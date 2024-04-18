@@ -69,3 +69,14 @@ model Carts{
   //relasi
   laporan Laporans @relation(fields: [laporan_id], references: [id], onDelete: Cascade)
 }
+
+model Pengeluarans{
+  id Int @id @default(autoincrement())
+  nama_barang String
+  harga Int
+  jumlah Int
+  total_harga Int
+  kategori String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

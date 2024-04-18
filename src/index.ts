@@ -23,6 +23,11 @@ import jwt from "@elysiajs/jwt";
 import cors from "@elysiajs/cors";
 import { html } from "@elysiajs/html";
 import staticPlugin from "@elysiajs/static";
+import {
+  getPengeluaran,
+  pengeluaran,
+  postPengeluaran,
+} from "./controller/pengeluaranController";
 
 const prisma = new PrismaClient();
 
@@ -145,6 +150,14 @@ const api = new Elysia({ prefix: "/api" })
       return { message: "success" };
     }
   )
+
+  .get("/pengeluaran", () => {
+    return getPengeluaran();
+  })
+
+  .post("/pengeluaran", (req: { body: pengeluaran }) => {
+    return postPengeluaran(req.body);
+  })
 
   .listen(3000);
 

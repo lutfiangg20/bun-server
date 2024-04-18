@@ -7,6 +7,15 @@ type laporan = {
   cart: [];
 };
 
+type pengeluaran = {
+  nama_barang: string;
+  harga: number;
+  stok: number;
+  jumlah: number;
+  total_harga: number;
+  jenis: string;
+};
+
 export const getLaporan = async () => {
   try {
     const laporan = await prisma.laporans.findMany({
