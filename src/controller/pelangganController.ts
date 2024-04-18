@@ -25,3 +25,16 @@ export const postPelanggan = async (data: pelanggan) => {
     console.log(err);
   }
 };
+
+export const deletePelanggan = async (id: number) => {
+  try {
+    const pelanggan = await prisma.pelanggans.delete({
+      where: {
+        id: id,
+      },
+    });
+    console.log(pelanggan);
+  } catch (err) {
+    console.log(err);
+  }
+};

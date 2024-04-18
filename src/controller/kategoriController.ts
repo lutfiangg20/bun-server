@@ -24,3 +24,16 @@ export const postKategori = async (data: kategori) => {
     console.log(err);
   }
 };
+
+export const deleteKategori = async (id: number) => {
+  try {
+    const kategori = await prisma.kategoris.delete({
+      where: {
+        id: id,
+      },
+    });
+    console.log(kategori);
+  } catch (err) {
+    console.log(err);
+  }
+};
