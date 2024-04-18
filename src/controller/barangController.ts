@@ -11,7 +11,6 @@ type data = {
 export const getBarang = async () => {
   try {
     const barang = await prisma.barangs.findMany();
-    console.log(barang);
     return barang;
   } catch (err) {
     console.log(err);
@@ -55,6 +54,31 @@ export const editBarang = async (id: number, body: data) => {
       data: data,
     });
     console.log(barang);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const updateStok = async (
+  body: [
+    {
+      nama_barang: string;
+      stok: number;
+    }
+  ]
+) => {
+  try {
+    /* const barang = await prisma.barangs.updateMany({
+      where: { nama_barang: { in: [body.nama_barang] } },
+      data: { stok: stok },
+    }); */
+    body.map(async (item: any) => {
+      await prisma.barangs.update({
+        where: { nama_barang: item.nama_barang },
+        data: { stok: { decrement: item.stok } },
+      });
+    });
+    console.log("success update stok");
   } catch (err) {
     console.log(err);
   }

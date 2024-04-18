@@ -33,7 +33,7 @@ export const postLaporan = async (data: laporan) => {
       },
     });
 
-    console.log("laporan:", laporan);
+    console.log("laporan success");
   } catch (err) {
     console.log(err);
   }

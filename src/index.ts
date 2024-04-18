@@ -88,7 +88,7 @@ const api = new Elysia({ prefix: "/api" })
 
   .put(
     "/barang/stock",
-    (req: { body: { nama_barang: string; stok: number } }) => {
+    (req: { body: [{ nama_barang: string; stok: number }] }) => {
       const body = req.body;
       return updateStok(body);
     }

@@ -53,8 +53,10 @@ model Laporans {
 }
 
 model Carts{
-  id Int @id @default(autoincrement())
+  id_cart Int @id @default(autoincrement())
+  id Int
   laporan_id Int
+  pelanggan String
   nama_barang String
   harga Int
   stok Int
