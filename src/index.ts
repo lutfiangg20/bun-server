@@ -1,12 +1,28 @@
 import { Cookie, Elysia } from "elysia";
 import { PrismaClient } from "@prisma/client";
-import { postBarang, getBarang } from "./controller/barangController";
-import { getKategori, postKategori } from "./controller/kategoriController";
-import { getPelanggan, postPelanggan } from "./controller/pelangganController";
+import {
+  postBarang,
+  getBarang,
+  deleteBarang,
+  editBarang,
+  updateStok,
+} from "./controller/barangController";
+import {
+  deleteKategori,
+  getKategori,
+  postKategori,
+} from "./controller/kategoriController";
+import {
+  deletePelanggan,
+  getPelanggan,
+  postPelanggan,
+} from "./controller/pelangganController";
 import { getUser, postUser, signIn } from "./controller/userController";
 import { getLaporan, postLaporan } from "./controller/laporanController";
 import jwt from "@elysiajs/jwt";
 import cors from "@elysiajs/cors";
+import { html } from "@elysiajs/html";
+import staticPlugin from "@elysiajs/static";
 
 const prisma = new PrismaClient();
 
@@ -22,7 +38,7 @@ type user = {
   password: string;
 };
 
-const app = new Elysia({ prefix: "/api" })
+const api = new Elysia({ prefix: "/api" })
   .use(cors({ credentials: true }))
   .use(jwt({ name: "jwt", secret: "rahasia-dong" }))
 
@@ -59,6 +75,25 @@ const app = new Elysia({ prefix: "/api" })
     return { message: "success" };
   })
 
+  .delete("/barang/:id", (req: { params: { id: number } }) => {
+    const id = Number(req.params.id);
+    return deleteBarang(id);
+  })
+
+  .put("/barang/:id", (req: { params: { id: number }; body: barang }) => {
+    const id = Number(req.params.id);
+    const body = req.body;
+    return editBarang(id, body);
+  })
+
+  .put(
+    "/barang/stock",
+    (req: { body: { nama_barang: string; stok: number } }) => {
+      const body = req.body;
+      return updateStok(body);
+    }
+  )
+
   .get("/kategori", () => {
     return getKategori();
   })
@@ -68,12 +103,22 @@ const app = new Elysia({ prefix: "/api" })
     return { message: "success" };
   })
 
+  .delete("/kategori/:id", (req: { params: { id: number } }) => {
+    deleteKategori(Number(req.params.id));
+    return { message: "success" };
+  })
+
   .get("/pelanggan", () => {
     return getPelanggan();
   })
 
   .post("/pelanggan", (req: { body: { nama: string } }) => {
     postPelanggan(req.body);
+    return { message: "success" };
+  })
+
+  .delete("/pelanggan/:id", (req: { params: { id: number } }) => {
+    deletePelanggan(Number(req.params.id));
     return { message: "success" };
   })
 
@@ -104,5 +149,5 @@ const app = new Elysia({ prefix: "/api" })
   .listen(3000);
 
 console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  `🦊 Elysia is running at ${api.server?.hostname}:${api.server?.port}`
 );
