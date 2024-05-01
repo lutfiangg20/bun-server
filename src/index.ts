@@ -28,6 +28,7 @@ import {
   pengeluaran,
   postPengeluaran,
 } from "./controller/pengeluaranController";
+import { getCart } from "./controller/cartController";
 
 const prisma = new PrismaClient();
 
@@ -150,6 +151,10 @@ const api = new Elysia({ prefix: "/api" })
       return { message: "success" };
     }
   )
+
+  .get("/cart", () => {
+    return getCart();
+  })
 
   .get("/pengeluaran", () => {
     return getPengeluaran();
